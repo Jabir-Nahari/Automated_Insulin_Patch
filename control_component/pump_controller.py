@@ -1,7 +1,8 @@
 import RPi.GPIO as GPIO
 import timer as timer
 
-insulin_dose = input("Please enter the dosage: ")
+if __name__ == "__main__":
+    insulin_dose = input("Please enter the dosage: ")
 pump_flow_rate = 0.0028 # micro liters Per second
 
 GPIO.setwarnings(False)
