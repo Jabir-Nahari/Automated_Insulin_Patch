@@ -12,8 +12,8 @@ command = int(input("Enter 1 to run and 2 to stop: "))
 def control_breaker():
     if command == 1:
         GPIO.output(breaker_pin, GPIO.HIGH)
-    if command == 2:
-        GPIO.output(breaker_pin, GPIO.HIGH)
+    elif command == 2:
+        GPIO.output(breaker_pin, GPIO.LOW)
     else:
         print("Wrong input!")
         
