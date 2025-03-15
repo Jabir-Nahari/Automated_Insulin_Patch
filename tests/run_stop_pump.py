@@ -8,7 +8,7 @@ GPIO.setwarnings(False)
 GPIO.setup(breaker_pin, GPIO.OUT)
 
 GPIO.output(breaker_pin, GPIO.LOW)
-command = input("Enter 1 to run and 2 to stop: ")
+command = int(input("Enter 1 to run and 2 to stop: "))
 def control_breaker():
     if command == 1:
         GPIO.output(breaker_pin, GPIO.HIGH)
