@@ -6,3 +6,5 @@ def log():
         while True:
             file.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} - Pump {pump_controller.get_status}\n")
             time.sleep(1)
+            
+log()
