@@ -8,10 +8,16 @@ def wait(period):
     time.sleep(period)
     
     
-def execute_in_period(fun, period):
+def execute_through_period(fun, period):
     new_time = time.time + 10000
     while time.time() < new_time:
         fun()
         begin_time = time.time()
         new_time = begin_time + period
         
+        
+async def execute_in_period(fun,period):
+    begin_time = time.time()
+    while True:
+        wait(time_in_seconds(period,0))
+        fun()
