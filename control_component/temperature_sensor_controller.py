@@ -2,7 +2,7 @@ import time
 import RPi.GPIO
 import smbus2
 
-bus - smbus2.SMBus(5)
+bus = smbus2.SMBus(5)
 ADS1115_Address = 0x48
 ADS1115_POINTER_CONVERSION = 0x00
 ADS1115_POINTER_CONFIG = 0x01
