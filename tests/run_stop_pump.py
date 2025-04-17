@@ -4,7 +4,7 @@ import time
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
-breaker_pin = 24
+breaker_pin = 23
 GPIO.setup(breaker_pin, GPIO.OUT)
 
 command = int(input("Enter 1 to run and 2 to stop: "))
