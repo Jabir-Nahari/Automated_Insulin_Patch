@@ -7,7 +7,7 @@ pump_flow_rate = 0.0028 # micro liters Per second
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-used_pin = 24
+used_pin = 23
 
 
 def calculate_dose_time(dose): # Dose is amount of micro liters
