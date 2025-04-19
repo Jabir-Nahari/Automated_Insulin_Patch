@@ -11,7 +11,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 ads = ADS.ADS1115(i2c)
 
 # Create single-ended input on channel 0
-chan = AnalogIn(ads, ADS.P0)
+chan = AnalogIn(ads, ADS.P1)
 
 print("{:>5}\t{:>5}".format('raw', 'v'))
 
