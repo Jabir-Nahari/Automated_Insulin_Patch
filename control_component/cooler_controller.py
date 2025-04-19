@@ -9,10 +9,10 @@ GPIO.setmode(GPIO.BCM)
 used_pin = 24
 
 
-def cool():
+async def cool():
     GPIO.setup(used_pin, GPIO.OUT)
     GPIO.output(used_pin, GPIO.HIGH)
-    timer.wait(timer.time_in_seconds(run_duration, 0))
+    await timer.wait(timer.time_in_seconds(run_duration, 0))
     GPIO.output(used_pin, GPIO.LOW)
     
 
