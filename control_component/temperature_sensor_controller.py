@@ -9,9 +9,6 @@ from adafruit_ads1x15.analog_in import AnalogIn
 i2c = busio.I2C(board.SCL, board.SDA)
 ads = ADS.ADS1115(i2c)
 read_channel = AnalogIn(ads, ADS.P1)
-ads.gain = 0.6666666666666666
-ads.data_rate = 128
-
 
 
 alert_pin = 4
