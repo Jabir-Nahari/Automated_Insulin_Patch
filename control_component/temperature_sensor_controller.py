@@ -30,7 +30,7 @@ class temprature_sensor:
         return read_channel.voltage
 
             
-    async def temprature_check(self, threshhold = 200s):
+    async def temprature_check(self, threshhold = 200):
         
         GPIO.setup(alert_pin, GPIO.OUT)
         
