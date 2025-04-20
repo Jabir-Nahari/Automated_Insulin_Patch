@@ -1,11 +1,17 @@
 import time
 import RPi.GPIO
 import smbus2
+import board
+import busio
+import adafruit_ads1x15.ads1115 as ADS
+from adafruit_ads1x15.analog_in import AnalogIn
 
-bus = smbus2.SMBus(5)
-ADS1115_Address = 0x48
-ADS1115_POINTER_CONVERSION = 0x00
-ADS1115_POINTER_CONFIG = 0x01
+i2c = busio.I2C(board.SCL, board.SDA)
+ads = ADS.ADS1115(i2c)
+read_channel = AnalogIn(ads, ADS.P1)
+ads.gain = 0
+ads.data_rate = 128
+ads.mode = ADS.Mode.SINGLE
 
 
 
@@ -14,35 +20,34 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(alert_pin, GPIO.OUT)
 
+class temprature_sensor:
+    def __init__(self, threshhold):
+        self.threshhold = threshhold # In Celsius
+        self.current = 0
+        self.temprature = 0
+    
+    
+    async def read_temp_sensor(self):
+        return read_channel.voltage
 
-def read_ads1115(channel):
-    # Config register value for single-shot mode on the specified channel
-    config = 0xC383 | (channel << 12)  # Example config for channel 0, gain = 1
-
-    # Write config register
-    bus.write_i2c_block_data(ADS1115_ADDRESS, ADS1115_POINTER_CONFIG, [(config >> 8) & 0xFF, config & 0xFF])
-
-    # Wait for conversion to complete (depends on data rate)
-    time.sleep(0.1)
-
-    # Read conversion result
-    result = bus.read_i2c_block_data(ADS1115_ADDRESS, ADS1115_POINTER_CONVERSION, 2)
-
-    # Convert result to 16-bit integer
-    value = (result[0] << 8) | result[1]
-    if value & 0x8000:
-        value -= 1 << 16
-
-    return value
-
-
-async def read_temperature():
-    voltage = read_ads1115(2) * 4.096 / 32768
-    temperature = voltage*0.0001
-    return temperature
-
-async def sensing_loop():
-    while True:
-        temprature = await read_temperature()
-        print(temprature)
-
+            
+    async def temprature_check(self, threshhold = self.threshhold):
+        
+        GPIO.setup(alert_pin, GPIO.OUT)
+        
+        while true:
+            self.current = await read_temp_sensor()
+            self.temprature = self.current*100
+            if (temprature > threshhold):
+                GPIO.output(alert_pin, GPIO.HIGH)
+            else:
+                GPIO.output(alert_pin, GPIO.LOW)
+                
+    async def store_temprature(self):
+        
+        try:
+            with open("temp_data.txt", 'a') as f:
+                f.write(f"Temp: {self.temprature}\n")
+        except Exception as e:
+            print(e)
+        
