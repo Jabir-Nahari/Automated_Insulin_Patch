@@ -34,7 +34,7 @@ class temprature_sensor:
         
         GPIO.setup(alert_pin, GPIO.OUT)
         
-        while true:
+        while True:
             self.current = await read_temp_sensor()
             self.temprature = self.current*100
             if (temprature > threshhold):
