@@ -1,5 +1,5 @@
 import time
-import RPi.GPIO
+import RPi.GPIO as GPIO
 import smbus2
 import board
 import busio
