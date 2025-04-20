@@ -15,7 +15,7 @@ ads.mode = ADS.Mode.SINGLE
 
 
 
-alert_pin = 0
+alert_pin = 4
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(alert_pin, GPIO.OUT)
