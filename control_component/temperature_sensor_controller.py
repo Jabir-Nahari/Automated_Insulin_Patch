@@ -78,8 +78,8 @@ class TemperatureSensor: # Corrected class name casing
 
         while True:
             # Read temperature (offloads blocking I/O)
-            voltage =  (await asyncio.gather(self.read_temp_sensor()))[0] # This already uses executor internally
-            self.current_temperature = voltage * 100 # Assuming linear conversion
+            voltage =  await asyncio.gather(self.read_temp_sensor())# This already uses executor internally
+            self.current_temperature = (await voltage)[0] * 100 # Assuming linear conversion
 
             print(f"[{time.strftime('%H:%M:%S')}] Read Temp: {self.current_temperature:.2f} C (Voltage: {voltage:.4f}V)")
 
