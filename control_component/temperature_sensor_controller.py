@@ -11,7 +11,6 @@ ads = ADS.ADS1115(i2c)
 read_channel = AnalogIn(ads, ADS.P1)
 ads.gain = 0.6666666666666666
 ads.data_rate = 128
-ads.mode = ADS.Mode.SINGLE
 
 
 
