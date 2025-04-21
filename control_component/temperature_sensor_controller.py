@@ -154,5 +154,5 @@ class TemperatureSensor:
             print(f"[{time.strftime('%H:%M:%S')}] Stored temperature: {self.current_temperature:.2f} C") # Print the value that was stored
 
             # Yield control back to the event loop
-            await asyncio.sleep(store_interval)
+            # await asyncio.sleep(store_interval)
 
