@@ -124,7 +124,7 @@ class TemperatureSensor:
             await asyncio.sleep(check_interval)
 
 
-    async def store_temperature(self, store_interval=5):
+    async def store_temperature(self, store_interval=1):
         """Periodically stores the current temperature."""
         if not hardware_initialized:
              print("Temperature storage skipped: hardware not initialized.")
@@ -154,5 +154,5 @@ class TemperatureSensor:
             print(f"[{time.strftime('%H:%M:%S')}] Stored temperature: {self.current_temperature:.2f} C") # Print the value that was stored
 
             # Yield control back to the event loop
-            # await asyncio.sleep(store_interval)
+            await asyncio.sleep(store_interval)
 
