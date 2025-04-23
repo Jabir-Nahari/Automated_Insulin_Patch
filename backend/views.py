@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
 from .mongo import crud
 import json
 from datetime import datetime
 
 def main_page(request):
-    return render(request, "static/main.html")
+    # return render(request, "./static/main.html")
+    return FileResponse(open('static/main.html', 'rb'))
 
 
 def scheduling_api(request, dose_id):
