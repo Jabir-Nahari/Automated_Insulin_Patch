@@ -717,7 +717,7 @@
   
   <script>
     // Mock API for testing (replace with actual endpoint)
-    const API_BASE_URL = 'https://127.0.0.1:8080/';
+    const API_BASE_URL = 'http://127.0.0.1:8080/';
     const mockDoses = [
       { id: 1, time: '07:30', type: 'Meal Bolus', amount: 4.2, description: 'Breakfast' },
       { id: 2, time: '12:30', type: 'Meal Bolus', amount: 4.5, description: 'Lunch' },
@@ -845,7 +845,7 @@
     // Fetch and display doses
     async function fetchDoses() {
       try {
-        const response = await fetch('https://192.168.231.216:8080/#schedule',{
+        const response = await fetch('http://192.168.231.216:8080/#schedule',{
             method: 'GET',
             headers:{
                 'Content-Type': 'application/json'
