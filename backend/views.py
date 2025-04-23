@@ -9,7 +9,7 @@ def main_page(request):
     return FileResponse(open('backend/static/main.html', 'rb'))
 
 
-def scheduling_api(request, dose_id):
+def scheduling_api(request, dose_id = ""):
     if request.method == "GET":
         schedule = crud.get_pending_doses()
         json_schedule = json.dumps(schedule)
