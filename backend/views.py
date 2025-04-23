@@ -6,7 +6,7 @@ from datetime import datetime
 
 def main_page(request):
     # return render(request, "./static/main.html")
-    return FileResponse(open('./static/main.html', 'rb'))
+    return FileResponse(open('backend/static/main.html', 'rb'))
 
 
 def scheduling_api(request, dose_id):
