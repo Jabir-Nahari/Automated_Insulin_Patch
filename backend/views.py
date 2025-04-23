@@ -50,5 +50,3 @@ def scheduling_api(request, dose_id = ""):
     else:
         return HttpResponse("Invalid Request", status = 404)
     
-    
-client.close()

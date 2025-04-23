@@ -164,4 +164,3 @@ class TemperatureSensor:
             # Yield control back to the event loop
             await asyncio.sleep(store_interval)
 
-client.close()
