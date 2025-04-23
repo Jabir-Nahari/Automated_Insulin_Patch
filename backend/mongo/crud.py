@@ -4,7 +4,7 @@ import os
 import time
 
 # Load environment variables
-mongo_uri="MONGO_URI=mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.0"
+mongo_uri="mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.0"
 # try:
     # Connect to MongoDB
 client = MongoClient(mongo_uri)
