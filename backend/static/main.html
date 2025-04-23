@@ -878,70 +878,70 @@
           `;
           doseList.appendChild(doseItem);
 
-          // Form screen
-          const doseEntry = document.createElement('div');
-          doseEntry.className = 'dose-entry';
-          doseEntry.innerHTML = `
-            <div class="dose-entry-header">
-              <span>${dose.time} - ${dose.description}</span>
-              <div class="dose-entry-actions">
-                <button class="action-btn update" data-id="${dose.id}">Update</button>
-                <button class="action-btn delete" data-id="${dose.id}">Delete</button>
-              </div>
-            </div>
-            <div>Type: ${dose.type}, Amount: ${dose.amount} U</div>
-          `;
-          doseEntries.appendChild(doseEntry);
-        });
+        //   // Form screen
+        //   const doseEntry = document.createElement('div');
+        //   doseEntry.className = 'dose-entry';
+        //   doseEntry.innerHTML = `
+        //     <div class="dose-entry-header">
+        //       <span>${dose.time} - ${dose.description}</span>
+        //       <div class="dose-entry-actions">
+        //         <button class="action-btn update" data-id="${dose.id}">Update</button>
+        //         <button class="action-btn delete" data-id="${dose.id}">Delete</button>
+        //       </div>
+        //     </div>
+        //     <div>Type: ${dose.type}, Amount: ${dose.amount} U</div>
+        //   `;
+        //   doseEntries.appendChild(doseEntry);
+        // });
 
-        // Add event listeners for update and delete buttons
-        document.querySelectorAll('.action-btn.update').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const id = btn.getAttribute('data-id');
-            const dose = doses.find(d => d.id == id);
-            document.getElementById('dose-time').value = dose.time;
-            document.getElementById('dose-type').value = dose.type;
-            document.getElementById('dose-amount').value = dose.amount;
-            document.getElementById('dose-description').value = dose.description;
-            document.getElementById('add-dose-btn').textContent = 'Update Dose';
-            document.getElementById('add-dose-btn').onclick = async () => {
-              try {
-                const response = await fetch(`${API_BASE_URL}/${id}`, {
-                  method: 'PUT',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    time: document.getElementById('dose-time').value,
-                    type: document.getElementById('dose-type').value,
-                    amount: parseFloat(document.getElementById('dose-amount').value),
-                    description: document.getElementById('dose-description').value
-                  })
-                });
-                const result = await response.json();
-                showPopup(result.message || 'Dose updated successfully.');
-                fetchDoses();
-                document.getElementById('add-dose-btn').textContent = 'Add Dose';
-                document.getElementById('add-dose-btn').onclick = addDoseHandler;
-              } catch (error) {
-                showPopup('Error updating dose: ' + error.message);
-              }
-            };
-          });
-        });
+        // // Add event listeners for update and delete buttons
+        // document.querySelectorAll('.action-btn.update').forEach(btn => {
+        //   btn.addEventListener('click', () => {
+        //     const id = btn.getAttribute('data-id');
+        //     const dose = doses.find(d => d.id == id);
+        //     document.getElementById('dose-time').value = dose.time;
+        //     document.getElementById('dose-type').value = dose.type;
+        //     document.getElementById('dose-amount').value = dose.amount;
+        //     document.getElementById('dose-description').value = dose.description;
+        //     document.getElementById('add-dose-btn').textContent = 'Update Dose';
+        //     document.getElementById('add-dose-btn').onclick = async () => {
+        //       try {
+        //         const response = await fetch(`${API_BASE_URL}/${id}`, {
+        //           method: 'PUT',
+        //           headers: { 'Content-Type': 'application/json' },
+        //           body: JSON.stringify({
+        //             time: document.getElementById('dose-time').value,
+        //             type: document.getElementById('dose-type').value,
+        //             amount: parseFloat(document.getElementById('dose-amount').value),
+        //             description: document.getElementById('dose-description').value
+        //           })
+        //         });
+        //         const result = await response.json();
+        //         showPopup(result.message || 'Dose updated successfully.');
+        //         fetchDoses();
+        //         document.getElementById('add-dose-btn').textContent = 'Add Dose';
+        //         document.getElementById('add-dose-btn').onclick = addDoseHandler;
+        //       } catch (error) {
+        //         showPopup('Error updating dose: ' + error.message);
+        //       }
+        //     };
+        //   });
+        // });
 
-        document.querySelectorAll('.action-btn.delete').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            const id = btn.getAttribute('data-id');
-            try {
-              const response = await fetch(`${API_BASE_URL}/${id}`, {
-                method: 'DELETE'
-              });
-              const result = await response.json();
-              showPopup(result.message || 'Dose deleted successfully.');
-              fetchDoses();
-            } catch (error) {
-              showPopup('Error deleting dose: ' + error.message);
-            }
-          });
+        // document.querySelectorAll('.action-btn.delete').forEach(btn => {
+        //   btn.addEventListener('click', async () => {
+        //     const id = btn.getAttribute('data-id');
+        //     try {
+        //       const response = await fetch(`${API_BASE_URL}/${id}`, {
+        //         method: 'DELETE'
+        //       });
+        //       const result = await response.json();
+        //       showPopup(result.message || 'Dose deleted successfully.');
+        //       fetchDoses();
+        //     } catch (error) {
+        //       showPopup('Error deleting dose: ' + error.message);
+        //     }
+        //   });
         });
       } catch (error) {
         showPopup('Error fetching doses: ' + error.message);
@@ -953,8 +953,8 @@
 
     // Initial fetch
 
-    document.querySelector('[data-screen="schedule-screen"]').addEventListener('click',()=>{
-      fetchDoses();
+    document.querySelector('[data-screen="schedule-screen"]').addEventListener('click',async (e)=>{
+      await fetchDoses();
     })
 
   </script>
