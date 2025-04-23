@@ -856,7 +856,7 @@
         const result = await response.json();
         const doses = result.data || [];
         // const doses = mockDoses;
-
+        console.log(doses)
         const doseList = document.getElementById('dose-list');
         const doseEntries = document.getElementById('dose-entries');
         doseList.innerHTML = '';
