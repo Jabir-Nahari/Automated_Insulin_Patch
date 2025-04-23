@@ -845,17 +845,17 @@
     // Fetch and display doses
     async function fetchDoses() {
       try {
-        // const response = await fetch('https://127.0.0.1:8080/',{
-        //     method: 'GET',
-        //     headers:{
-        //         'Content-Type': 'application/json'
-        //     }
+        const response = await fetch('https://127.0.0.1:8080/',{
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json'
+            }
 
-        // }); 
+        }); 
         
-        // const result = await response.json();
-        // const doses = result.data || [];
-        const doses = mockDoses;
+        const result = await response.json();
+        const doses = result.data || [];
+        // const doses = mockDoses;
 
         const doseList = document.getElementById('dose-list');
         const doseEntries = document.getElementById('dose-entries');
