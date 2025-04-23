@@ -952,7 +952,11 @@
     const addDoseHandler = document.getElementById('add-dose-btn').onclick;
 
     // Initial fetch
-    fetchDoses();
+
+    document.querySelector('[data-screen="schedule-screen"]').addEventListener('click',()=>{
+      fetchDoses();
+    })
+
   </script>
 </body>
 </html>
