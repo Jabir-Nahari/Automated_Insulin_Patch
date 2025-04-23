@@ -143,6 +143,5 @@ def delete_old_temperatures(before_date):
 
 #     # Delete temperature readings older than a day
 #     delete_old_temperatures(datetime.utcnow() - timedelta(days=1))
-client.close()
 # except Exception as e:
 #     print(f"Error: {e}")
