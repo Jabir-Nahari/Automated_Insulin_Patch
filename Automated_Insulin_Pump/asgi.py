@@ -1,5 +1,5 @@
 """
-ASGI config for aip_backend project.
+ASGI config for Automated_Insulin_Pump project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'aip_backend.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Automated_Insulin_Pump.settings')
 
 application = get_asgi_application()

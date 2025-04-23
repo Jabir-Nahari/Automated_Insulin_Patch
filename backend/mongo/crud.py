@@ -13,13 +13,14 @@ try:
     temp_collection = db.temperature_readings
 
     # --- CREATE: Insert Insulin Dose Schedule ---
-    def add_insulin_dose(dose, scheduled_time, notes=""):
+    def add_insulin_dose(dose_id, scheduled_time, amount, notes=""):
         """Add a single insulin dose schedule."""
         try:
             result = insulin_collection.insert_one({
-                "dose": dose,
+                "dose_id": dose_id,
                 "scheduled_time": scheduled_time,
                 "status": "pending",
+                "amount": amount,
                 "notes": notes
             })
             print(f"Inserted insulin dose")
@@ -49,7 +50,16 @@ try:
 
 
     # --- READ: Get Pending Insulin Doses ---
-    def get_pending_doses(user_id):
+    def get_dose(dose_id):
+        try:
+            dose = insulin_collection.find_one({
+                "dose_id": dose_id
+            })
+            return dose
+        except Exception as e:
+            print(f'cannot retrieve dose {dose_id}')
+    
+    def get_pending_doses():
         """Retrieve pending insulin doses within a time window."""
         try:
             # end_time = datetime.now() + timedelta(hours=time_window_hours)
@@ -61,8 +71,20 @@ try:
             print(f"Error retrieving doses: {e}")
             return []
 
+    def update_dose(dose_id, scheduled_time, status, amount, notes):
+        try:
+            insulin_collection.update_one({'dose_id':dose_id},{
+                "$set":{
+                "scheduled_time": scheduled_time,
+                "status": status,
+                "amount": amount,
+                "notes": notes}
+            })
+        except Exception as e:
+            print(f'Cannot update schedule of dose {dose_id}')
+
     # --- READ: Get Recent Temperature Readings ---
-    def get_recent_temperatures(user_id, limit=10):
+    def get_recent_temperatures(limit=10):
         """Retrieve the most recent temperature readings."""
         try:
             readings = temp_collection.find().sort("timestamp", -1).limit(limit)
@@ -75,7 +97,7 @@ try:
     def mark_dose_taken(dose_id):
         """Update a dose's status to taken."""
         try:
-            result = insulin_collection.update_one(
+            result = insulin_collection.update_one({'dose_id': dose_id},
                 {"$set": {"status": "taken", "notes": "Dose taken on time"}}
             )
             print(f"Updated {result.modified_count} dose(s)")

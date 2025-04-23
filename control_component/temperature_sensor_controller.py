@@ -6,6 +6,14 @@ import board
 import busio
 import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
+import importlib.util
+import os
+
+module_path = '/home/Automated_Insulin_Pump/aip_backend/aip_backend/models/crud.py'
+module_name = 'crud'
+spec = importlib.util.spec_from_file_location(module_name, module_path)
+my_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(my_module)
 
 # --- Hardware Initialization (These are typically blocking, done once) ---
 # Ensure these are initialized *before* starting the asyncio loop
@@ -141,12 +149,12 @@ class TemperatureSensor:
             # print(f"[{threading.current_thread().name}] Executing file write...")
             try:
                 # Standard blocking file I/O
-                with open("temp_data.txt", 'a') as f:
-                    f.write(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Temp: {temp_to_store:.2f} C\n")
+                single_insert_temperatures(temp_to_store,time.strftime('%Y-%m-%d %H:%M:%S'),)
+                # f.write(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Temp: {temp_to_store:.2f} C\n")
                 # print(f"[{threading.current_thread().name}] Finished file write.")
             except Exception as e:
                 # Handle file writing errors
-                print(f"[{threading.current_thread().name}] Error writing to file: {e}")
+                print(f"[{threading.current_thread().name}] Error writing to db: {e}")
 
         while True:
             # Offload the synchronous blocking file writing function to executor
