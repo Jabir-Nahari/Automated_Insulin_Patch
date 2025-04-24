@@ -866,6 +866,7 @@
         doseEntries.innerHTML = '';
         for (let i = 0; i < doses.length; i++) {
           const dose = doses[i];
+          console.log("DOSE: "+dose)
           // Schedule screen
           const doseItem = document.createElement('div');
           doseItem.className = 'dose-item';
