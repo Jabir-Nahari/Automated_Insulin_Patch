@@ -69,9 +69,11 @@ class connect_db:
         """Retrieve pending insulin doses within a time window."""
         try:
             # end_time = datetime.now() + timedelta(hours=time_window_hours)
-            doses = self.insulin_collection.find({
-                "status": "pending"
-            })
+            # doses = self.insulin_collection.find({
+            #     "status": "pending"
+            # })
+            
+            doses = self.insulin_collection.find()
             print('Doses are: ')
             print(list(doses))
             return list(doses)
