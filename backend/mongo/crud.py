@@ -12,9 +12,9 @@ class connect_db:
     
     def __init__(self):
         self.client = MongoClient(mongo_uri)
-        self.db = client.health_monitor
-        self.insulin_collection = db.insulin_schedule
-        self.temp_collection = db.temperature_readings
+        self.db = self.client.health_monitor
+        self.insulin_collection = self.db.insulin_schedule
+        self.temp_collection = self.db.temperature_readings
     
     
 
