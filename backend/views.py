@@ -3,6 +3,8 @@ from django.http import HttpResponse, JsonResponse, FileResponse
 from .mongo import crud
 import json
 from datetime import datetime
+from bson import json_util
+
 
 
 
@@ -17,10 +19,11 @@ def scheduling_api(request, dose_id = ""):
         schedule = db_object.get_pending_doses()
         # json_schedule = json.dumps(schedule)
         # print(json_schedule)
+        json_data = json_util.dumps(schedule)
         print("SCHEDULE IS: ")
-        print(schedule)
+        print(json_data)
         db_object.close_db()
-        return JsonResponse(schedule, safe=False)
+        return JsonResponse(json_data, safe=False)
     
     elif request.method == "POST":
         if not db_object.get_dose(dose_id):
