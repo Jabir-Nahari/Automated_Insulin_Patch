@@ -66,6 +66,8 @@ def get_pending_doses():
         doses = insulin_collection.find({
             "status": "pending"
         })
+        print('Doses are: ')
+        print(doses)
         return list(doses)
     except Exception as e:
         print(f"Error retrieving doses: {e}")
