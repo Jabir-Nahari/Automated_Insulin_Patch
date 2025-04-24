@@ -123,7 +123,7 @@ class connect_db:
             
             
     def close_db(self):
-        self.db.close()
+        self.client.close()
 
 #     # --- Example Usage ---
 #     # Add an insulin dose
