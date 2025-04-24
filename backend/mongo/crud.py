@@ -67,7 +67,7 @@ def get_pending_doses():
             "status": "pending"
         })
         print('Doses are: ')
-        print(doses)
+        print(list(doses))
         return list(doses)
     except Exception as e:
         print(f"Error retrieving doses: {e}")
