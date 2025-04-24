@@ -858,14 +858,14 @@
         console.log(result)
 
         const doses = result;
-        console.log("doses: " + doses)
+        console.log("doses: " + typeof(doses))
         // const doses = mockDoses;
         const doseList = document.getElementById('dose-list');
         const doseEntries = document.getElementById('dose-entries');
         doseList.innerHTML = '';
         doseEntries.innerHTML = '';
-
-        doses.forEach(dose => {
+        for (let i = 0; i < doses.length; i++) {
+          const dose = doses[i];
           // Schedule screen
           const doseItem = document.createElement('div');
           doseItem.className = 'dose-item';
@@ -945,7 +945,7 @@
         //       showPopup('Error deleting dose: ' + error.message);
         //     }
         //   });
-        });
+        }
       } catch (error) {
         showPopup('Error fetching doses: ' + error.message);
       }
