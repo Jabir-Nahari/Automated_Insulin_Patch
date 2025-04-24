@@ -857,7 +857,7 @@
         const result = await response.json();
         console.log(result)
 
-        const doses = result.data || [];
+        const doses = JSON.parse(result);
         console.log("doses: " + doses)
         // const doses = mockDoses;
         const doseList = document.getElementById('dose-list');
