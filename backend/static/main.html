@@ -855,6 +855,8 @@
         // temp = await response.text()
         // console.log(temp)
         const result = await response.json();
+        console.log(result)
+
         const doses = result.data || [];
         // const doses = mockDoses;
         const doseList = document.getElementById('dose-list');
