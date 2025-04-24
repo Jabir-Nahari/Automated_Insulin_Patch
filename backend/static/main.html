@@ -871,12 +871,12 @@
           doseItem.className = 'dose-item';
           doseItem.innerHTML = `
             <div class="dose-header">
-              <span class="dose-time">${dose.scheduled_time}</span>
-              <span>${dose.notes}</span>
+              <span class="dose-time">${dose["Schduled_time"]}</span>
+              <span>${dose["notes"]}</span>
             </div>
             <div class="dose-info">
-              <span>${dose.status}</span>
-              <span>${dose.amount} U</span>
+              <span>${dose["status"]}</span>
+              <span>${dose["amount"]} U</span>
             </div>
           `;
           doseList.appendChild(doseItem);
