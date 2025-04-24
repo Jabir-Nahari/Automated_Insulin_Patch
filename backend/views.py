@@ -14,7 +14,7 @@ def scheduling_api(request, dose_id = ""):
         schedule = crud.get_pending_doses()
         # json_schedule = json.dumps(schedule)
         # print(json_schedule)
-        return JsonResponse(schedule)
+        return JsonResponse(schedule, safe=False)
     
     elif request.method == "POST":
         if not crud.get_dose(dose_id):
