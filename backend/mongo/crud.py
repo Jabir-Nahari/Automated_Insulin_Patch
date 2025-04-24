@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from datetime import datetime, timedelta
 import os
 import time
-
+import uuid
 # Load environment variables
 mongo_uri="mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.0"
 # try:
@@ -19,11 +19,12 @@ class connect_db:
     
 
 # --- CREATE: Insert Insulin Dose Schedule ---
-    def add_insulin_dose(self,dose_id, scheduled_time, amount, notes=""):
+    def add_insulin_dose(self, scheduled_time, amount, notes=""):
         """Add a single insulin dose schedule."""
         try:
+            unique_id = str(uuid.uuid4())
             result = self.insulin_collection.insert_one({
-                "dose_id": dose_id,
+                "dose_id": unique_id,
                 "scheduled_time": scheduled_time,
                 "status": "pending",
                 "amount": amount,

@@ -26,12 +26,10 @@ def scheduling_api(request, dose_id = ""):
         return JsonResponse(json_data, safe=False)
     
     elif request.method == "POST":
-        if not db_object.get_dose(dose_id):
-            return HttpResponse("Dose does not exist", status = 404)
-        schedule_time = request.POST.get('Time') # Format - HH:MM
-        schedule_date = request.POST.get('Date') # Format - YYYY:MM:DD
-        schedule_notes = request.POST.get('Notes')
-        schedule_amount = request.POST.get("Amount")
+        schedule_time = request.POST.get('time') # Format - HH:MM
+        schedule_date = request.POST.get('date') # Format - YYYY:MM:DD
+        schedule_notes = request.POST.get('notes')
+        schedule_amount = request.POST.get("amount")
         date_time_str = f'{schedule_date} {schedule_time}'
         schedule_datetime = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
         db_object.add_insulin_dose(schedule_datetime.strftime('%Y-%m-%d %H:%M'), schedule_amount, schedule_notes)
@@ -41,12 +39,12 @@ def scheduling_api(request, dose_id = ""):
         if not db_object.get_dose(dose_id):
             db_object.close_db()
             return HttpResponse("Dose does not exist", status = 404)
-        schedule_dose_id = request.POST.get('Dose_ID')
-        schedule_time = request.POST.get('Time') # Format - HH:MM
-        schedule_date = request.POST.get('Date') # Format - YYYY:MM:DD
-        schedule_status = request.POST.get('Status')
-        schedule_notes = request.POST.get('Notes')
-        schedule_amount = request.POST.get("Amount")
+        schedule_dose_id = request.POST.get('dose_id')
+        schedule_time = request.POST.get('time') # Format - HH:MM
+        schedule_date = request.POST.get('date') # Format - YYYY:MM:DD
+        schedule_status = request.POST.get('status')
+        schedule_notes = request.POST.get('notes')
+        schedule_amount = request.POST.get("anount")
         date_time_str = f'{schedule_date} {schedule_time}'
         schedule_datetime = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
         db_object.update_dose(schedule_dose_id, schedule_datetime, schedule_status,schedule_amount, schedule_notes)
@@ -54,6 +52,8 @@ def scheduling_api(request, dose_id = ""):
         return HttpResponse("Dose Modified", status = 201)
     
     elif request.method == "DELETE":
+        json_data = json.loads(request.body)
+        dose_id = json_data.get('dose_id')
         if not db_object.get_dose(dose_id):
             db_object.close_db()
             return HttpResponse("Dose does not exist", status = 404)

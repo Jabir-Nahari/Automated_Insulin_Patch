@@ -717,7 +717,7 @@
   
   <script>
     // Mock API for testing (replace with actual endpoint)
-    const API_BASE_URL = 'http://127.0.0.1:8080/';
+    const API_BASE_URL = 'http://192.168.231.216:8080/schedule/';
     const mockDoses = [
       { id: 1, time: '07:30', type: 'Meal Bolus', amount: 4.2, description: 'Breakfast' },
       { id: 2, time: '12:30', type: 'Meal Bolus', amount: 4.5, description: 'Lunch' },
@@ -887,13 +887,13 @@
           doseEntry.className = 'dose-entry';
           doseEntry.innerHTML = `
             <div class="dose-entry-header">
-              <span>${dose.time} - ${dose.description}</span>
+              <span>${dose["Schduled_time"]} - ${dose["notes"]}</span>
               <div class="dose-entry-actions">
-                <button class="action-btn update" data-id="${dose.id}">Update</button>
-                <button class="action-btn delete" data-id="${dose.id}">Delete</button>
+                <button class="action-btn update" dose_id="${dose.dose_id}">Update</button>
+                <button class="action-btn delete" dose-id="${dose.dose_id}">Delete</button>
               </div>
             </div>
-            <div>Type: ${dose.type}, Amount: ${dose.amount} U</div>
+            <div>Type: ${dose["status"]}, Amount: ${dose["amount"]} U</div>
           `;
           doseEntries.appendChild(doseEntry);
         };
@@ -901,23 +901,23 @@
         // Add event listeners for update and delete buttons
         document.querySelectorAll('.action-btn.update').forEach(btn => {
           btn.addEventListener('click', () => {
-            const id = btn.getAttribute('data-id');
+            const id = btn.getAttribute('dose-id');
             const dose = doses.find(d => d.id == id);
-            document.getElementById('dose-time').value = dose.time;
-            document.getElementById('dose-type').value = dose.type;
-            document.getElementById('dose-amount').value = dose.amount;
-            document.getElementById('dose-description').value = dose.description;
+            document.getElementById('scheduled_time').value = dose["scheduled_time"];
+            document.getElementById('status').value = dose["status"];
+            document.getElementById('amount').value = dose["amount"];
+            document.getElementById('notes').value = dose["notes"];
             document.getElementById('add-dose-btn').textContent = 'Update Dose';
             document.getElementById('add-dose-btn').onclick = async () => {
               try {
                 const response = await fetch(`${API_BASE_URL}/${id}`, {
                   method: 'PUT',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    time: document.getElementById('dose-time').value,
-                    type: document.getElementById('dose-type').value,
-                    amount: parseFloat(document.getElementById('dose-amount').value),
-                    description: document.getElementById('dose-description').value
+                  body: new URLSearchParams({
+                    time: document.getElementById('scheduled_time').value,
+                    status: document.getElementById('status').value,
+                    amount: parseFloat(document.getElementById('anount').value),
+                    notes: document.getElementById('notes').value
                   })
                 });
                 const result = await response.json();
@@ -934,13 +934,17 @@
 
         document.querySelectorAll('.action-btn.delete').forEach(btn => {
           btn.addEventListener('click', async () => {
-            const id = btn.getAttribute('data-id');
+            const id = btn.getAttribute('dose_id');
             try {
-              const response = await fetch(`${API_BASE_URL}/${id}`, {
-                method: 'DELETE'
+              const response = await fetch(`${API_BASE_URL}`, {
+                method: 'DELETE',
+                headers:{
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'dose_id':id})
               });
-              const result = await response.json();
-              showPopup(result.message || 'Dose deleted successfully.');
+              const result = await response.text();
+              showPopup(result);
               fetchDoses();
             } catch (error) {
               showPopup('Error deleting dose: ' + error.message);
