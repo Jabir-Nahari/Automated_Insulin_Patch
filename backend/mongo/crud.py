@@ -19,14 +19,14 @@ class connect_db:
     
 
 # --- CREATE: Insert Insulin Dose Schedule ---
-    def add_insulin_dose(self, scheduled_time, amount, notes=""):
+    def add_insulin_dose(self, scheduled_time, status, amount, notes=""):
         """Add a single insulin dose schedule."""
         try:
             unique_id = str(uuid.uuid4())
             result = self.insulin_collection.insert_one({
                 "dose_id": unique_id,
                 "scheduled_time": scheduled_time,
-                "status": "pending",
+                "status": status,
                 "amount": amount,
                 "notes": notes
             })

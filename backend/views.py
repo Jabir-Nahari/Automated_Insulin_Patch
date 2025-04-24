@@ -26,13 +26,15 @@ def scheduling_api(request, dose_id = ""):
         return JsonResponse(json_data, safe=False)
     
     elif request.method == "POST":
-        schedule_time = request.POST.get('time') # Format - HH:MM
-        schedule_date = request.POST.get('date') # Format - YYYY:MM:DD
+        # schedule_time = request.POST.get('time') # Format - HH:MM
+        # schedule_date = request.POST.get('date') # Format - YYYY:MM:DD
         schedule_notes = request.POST.get('notes')
         schedule_amount = request.POST.get("amount")
-        date_time_str = f'{schedule_date} {schedule_time}'
-        schedule_datetime = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
-        db_object.add_insulin_dose(schedule_datetime.strftime('%Y-%m-%d %H:%M'), schedule_amount, schedule_notes)
+        # date_time_str = f'{schedule_date} {schedule_time}'
+        # schedule_datetime = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
+        scheduled_time = request.POST.get('scheduled_time')
+        scheduled_status = request.POST.get('scheduled_status')
+        db_object.add_insulin_dose(scheduled_time, scheduled_status,schedule_amount, schedule_notes)
         db_object.close_db()
         return HttpResponse("Dose Scheduled", status = 201)
     elif request.method == "PUT":

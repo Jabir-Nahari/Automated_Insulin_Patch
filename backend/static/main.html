@@ -560,23 +560,23 @@
         <div class="schedule-form">
           <div class="form-group">
             <label class="form-label">Time</label>
-            <input type="time" class="form-input" id="dose-time" value="12:00">
+            <input type="datetime-local" class="form-input" id="add_time" name="timestamp">
           </div>
           <div class="form-group">
-            <label class="form-label">Type</label>
-            <select class="form-input" id="dose-type">
-              <option>Meal Bolus</option>
-              <option>Correction Bolus</option>
-              <option>Extended Bolus</option>
+            <label class="form-label">Status</label>
+            <select class="form-input" id="add_status" name="status">
+              <option value="pending">Pending</option>
+              <option value="taken">Taken</option>
+              <option value="undetermined">Undetermined</option>
             </select>
           </div>
           <div class="form-group">
             <label class="form-label">Amount (U)</label>
-            <input type="number" class="form-input" id="dose-amount" value="4.0" step="0.1" min="0">
+            <input type="number" class="form-input" id="add_amount" step="0.1" min="0" name="amount">
           </div>
           <div class="form-group">
-            <label class="form-label">Description</label>
-            <input type="text" class="form-input" id="dose-description" placeholder="e.g. Lunch">
+            <label class="form-label">Notes</label>
+            <input type="text" class="form-input" id="add_notes" placeholder="e.g. Lunch" name="notes">
           </div>
           <div class="form-actions">
             <button class="btn" id="add-dose-btn">Add Dose</button>
@@ -812,11 +812,26 @@
       fetchDoses();
     });
 
+    function formatTimestamp(timestamp_val) {
+    const input = timestamp_val
+    const date = new Date(input);
+
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const hh = String(date.getHours()).padStart(2, '0');
+    const mins = String(date.getMinutes()).padStart(2, '0');
+
+    const formatted = `${yyyy}:${mm}:${dd} ${hh}:${mins}`;
+    console.log("Formatted timestamp:", formatted);
+    return formatted;
+  }
+
     document.getElementById('add-dose-btn').addEventListener('click', async () => {
-      const time = document.getElementById('dose-time').value;
-      const type = document.getElementById('dose-type').value;
-      const amount = parseFloat(document.getElementById('dose-amount').value);
-      const description = document.getElementById('dose-description').value;
+      const time = formatTimestamp(document.getElementById('add_time').value);
+      const status = document.getElementById('add_status').value;
+      const amount = parseFloat(document.getElementById('add_amount').value);
+      const notes = document.getElementById('add_notes').value;
 
       if (!time || !type || isNaN(amount) || amount <= 0) {
         showPopup('Please fill all fields correctly.');
@@ -827,16 +842,21 @@
         const response = await fetch(API_BASE_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ time, type, amount, description })
+          body: URLSearchParams({ 
+            scheduled_time: time,
+            scheduled_amount: amount,
+            scheduled_status: status,
+            scheduled_notes: notes
+          })
         });
-        const result = await response.json();
-        showPopup(result.message || 'Dose added successfully.');
+        const result = await response.text();
+        showPopup(result);
         fetchDoses();
         // Clear form
-        document.getElementById('dose-time').value = '12:00';
-        document.getElementById('dose-type').value = 'Meal Bolus';
-        document.getElementById('dose-amount').value = '4.0';
-        document.getElementById('dose-description').value = '';
+        document.getElementById('add_time').value = null;
+        document.getElementById('add_status').value = null;
+        document.getElementById('add_amount').value = '0.0';
+        document.getElementById('add_notes').value = '';
       } catch (error) {
         showPopup('Error adding dose: ' + error.message);
       }
@@ -872,7 +892,7 @@
           doseItem.className = 'dose-item';
           doseItem.innerHTML = `
             <div class="dose-header">
-              <span class="dose-time">${dose["Schduled_time"]}</span>
+              <span class="dose-time">${dose["scheduled_time"]}</span>
               <span>${dose["notes"]}</span>
             </div>
             <div class="dose-info">
@@ -887,7 +907,7 @@
           doseEntry.className = 'dose-entry';
           doseEntry.innerHTML = `
             <div class="dose-entry-header">
-              <span>${dose["Schduled_time"]} - ${dose["notes"]}</span>
+              <span>${dose["scheduled_time"]} - ${dose["notes"]}</span>
               <div class="dose-entry-actions">
                 <button class="action-btn update" dose_id="${dose.dose_id}">Update</button>
                 <button class="action-btn delete" dose-id="${dose.dose_id}">Delete</button>
@@ -920,8 +940,8 @@
                     notes: document.getElementById('notes').value
                   })
                 });
-                const result = await response.json();
-                showPopup(result.message || 'Dose updated successfully.');
+                const result = await response.text();
+                showPopup(result);
                 fetchDoses();
                 document.getElementById('add-dose-btn').textContent = 'Add Dose';
                 document.getElementById('add-dose-btn').onclick = addDoseHandler;
