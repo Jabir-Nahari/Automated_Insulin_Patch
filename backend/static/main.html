@@ -838,7 +838,7 @@
         const response = await fetch(API_BASE_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: URLSearchParams({ 
+          body: new URLSearchParams({ 
             scheduled_time: time,
             scheduled_amount: amount,
             scheduled_status: status,
