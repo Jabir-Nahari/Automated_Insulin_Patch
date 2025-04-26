@@ -915,8 +915,9 @@
         // Add event listeners for update and delete buttons
         document.querySelectorAll('.action-btn.update').forEach(btn => {
           btn.addEventListener('click', () => {
-            const id = btn.getAttribute('dose-id');
+            const id = btn.getAttribute('dose_id');
             const dose = doses.find(d => d.id == id);
+            document.getElementById('schedule-form').scrollTop = 0;
             document.getElementById('add_time').value = dose["scheduled_time"];
             document.getElementById('add_status').value = dose["status"];
             document.getElementById('add_amount').value = dose["amount"];
