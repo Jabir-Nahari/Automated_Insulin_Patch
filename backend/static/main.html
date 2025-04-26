@@ -833,10 +833,6 @@
       const amount = parseFloat(document.getElementById('add_amount').value);
       const notes = document.getElementById('add_notes').value;
 
-      if (!time || !type || isNaN(amount) || amount <= 0) {
-        showPopup('Please fill all fields correctly.');
-        return;
-      }
 
       try {
         const response = await fetch(API_BASE_URL, {
