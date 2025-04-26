@@ -871,10 +871,8 @@
         // temp = await response.text()
         // console.log(temp)
         const result = await response.json();
-        console.log(result)
 
         const doses = JSON.parse(result);
-        console.log("doses: " + typeof(doses))
         // const doses = mockDoses;
         const doseList = document.getElementById('dose-list');
         const doseEntries = document.getElementById('dose-entries');

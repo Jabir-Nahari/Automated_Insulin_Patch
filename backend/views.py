@@ -20,8 +20,6 @@ def scheduling_api(request, dose_id = ""):
         # json_schedule = json.dumps(schedule)
         # print(json_schedule)
         json_data = json_util.dumps(schedule)
-        print("SCHEDULE IS: ")
-        print(json_data)
         db_object.close_db()
         return JsonResponse(json_data, safe=False)
     
