@@ -34,6 +34,7 @@ def scheduling_api(request, dose_id = ""):
         # schedule_datetime = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
         scheduled_time = request.POST.get('scheduled_time')
         scheduled_status = request.POST.get('scheduled_status')
+        print(scheduled_time, scheduled_status,schedule_amount, schedule_notes)
         db_object.add_insulin_dose(scheduled_time, scheduled_status,schedule_amount, schedule_notes)
         db_object.close_db()
         return HttpResponse("Dose Scheduled", status = 201)
