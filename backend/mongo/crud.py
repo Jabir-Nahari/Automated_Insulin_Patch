@@ -66,13 +66,11 @@ class connect_db:
         except Exception as e:
             print(f'cannot retrieve dose {dose_id}')
 
-    def get_pending_doses(self):
+    def get_doses(self):
         """Retrieve pending insulin doses within a time window."""
         try:
             # end_time = datetime.now() + timedelta(hours=time_window_hours)
-            doses = self.insulin_collection.find({
-                "status": "pending"
-            })
+            doses = self.insulin_collection.find({})
             
             # doses = self.insulin_collection.find()
             print('Doses are: ')

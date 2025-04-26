@@ -16,7 +16,7 @@ def main_page(request):
 def scheduling_api(request, dose_id = ""):
     db_object = crud.connect_db()
     if request.method == "GET":
-        schedule = db_object.get_pending_doses()
+        schedule = db_object.get_doses()
         # json_schedule = json.dumps(schedule)
         # print(json_schedule)
         json_data = json_util.dumps(schedule)
