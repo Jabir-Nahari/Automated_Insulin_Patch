@@ -28,8 +28,8 @@ def scheduling_api(request, dose_id = ""):
     elif request.method == "POST":
         # schedule_time = request.POST.get('time') # Format - HH:MM
         # schedule_date = request.POST.get('date') # Format - YYYY:MM:DD
-        schedule_notes = request.POST.get('notes')
-        schedule_amount = request.POST.get("amount")
+        schedule_notes = request.POST.get('scheduled_notes')
+        schedule_amount = request.POST.get("scheduled_amount")
         # date_time_str = f'{schedule_date} {schedule_time}'
         # schedule_datetime = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
         scheduled_time = request.POST.get('scheduled_time')
