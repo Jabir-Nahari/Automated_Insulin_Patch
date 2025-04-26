@@ -4,7 +4,7 @@ from .mongo import crud
 import json
 from datetime import datetime
 from bson import json_util
-
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -12,7 +12,7 @@ def main_page(request):
     # return render(request, "./static/main.html")
     return FileResponse(open('backend/static/main.html', 'rb'))
 
-
+@csrf_exempt
 def scheduling_api(request, dose_id = ""):
     db_object = crud.connect_db()
     if request.method == "GET":
