@@ -917,10 +917,10 @@
           btn.addEventListener('click', () => {
             const id = btn.getAttribute('dose-id');
             const dose = doses.find(d => d.id == id);
-            document.getElementById('scheduled_time').value = dose["scheduled_time"];
-            document.getElementById('status').value = dose["status"];
-            document.getElementById('amount').value = dose["amount"];
-            document.getElementById('notes').value = dose["notes"];
+            document.getElementById('add_time').value = dose["scheduled_time"];
+            document.getElementById('add_status').value = dose["status"];
+            document.getElementById('add_amount').value = dose["amount"];
+            document.getElementById('add_notes').value = dose["notes"];
             document.getElementById('add-dose-btn').textContent = 'Update Dose';
             document.getElementById('add-dose-btn').onclick = async () => {
               try {
