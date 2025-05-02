@@ -3,50 +3,50 @@ from datetime import datetime, timedelta
 import os
 import time
 import uuid
+
 # Load environment variables
-mongo_uri="mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.0"
+mongo_uri = "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.0"
 # try:
-    # Connect to MongoDB
-    
+# Connect to MongoDB
+
+
 class connect_db:
-    
     def __init__(self):
         self.client = MongoClient(mongo_uri)
         self.db = self.client.aip
         self.insulin_collection = self.db.insulin_schedule
         self.temp_collection = self.db.temperature_readings
-    
-    
 
-# --- CREATE: Insert Insulin Dose Schedule ---
+    # --- CREATE: Insert Insulin Dose Schedule ---
     def add_insulin_dose(self, scheduled_time, status, amount, notes=""):
         """Add a single insulin dose schedule."""
         try:
             unique_id = str(uuid.uuid4())
-            result = self.insulin_collection.insert_one({
-                "dose_id": unique_id,
-                "scheduled_time": scheduled_time,
-                "status": status,
-                "amount": amount,
-                "notes": notes
-            })
+            result = self.insulin_collection.insert_one(
+                {
+                    "dose_id": unique_id,
+                    "scheduled_time": scheduled_time,
+                    "status": status,
+                    "amount": amount,
+                    "notes": notes,
+                }
+            )
             print(f"Inserted insulin dose")
         except Exception as e:
             print(f"Error inserting insulin dose: {e}")
 
     # --- CREATE: Batch Insert Temperature Readings ---
-    def single_insert_temperatures(self,temprature, timestamp):
+    def single_insert_temperatures(self, temprature, timestamp):
         """Batch insert temperature readings to optimize memory usage."""
         try:
-            result = self.temp_collection.insert_one({
-                "temprature": temprature,
-                "timestamp": timestamp
-            })
+            result = self.temp_collection.insert_one(
+                {"temprature": temprature, "timestamp": timestamp}
+            )
             print(f"Inserted {len(result.inserted_ids)} temperature readings")
         except Exception as e:
             print(f"Error inserting temperature readings: {e}")
 
-    #-- Create: Batch insert temprature readings --
+    # -- Create: Batch insert temprature readings --
     # def batch_insert_temperatures(readings):
     #     """Batch insert temperature readings to optimize memory usage."""
     #     try:
@@ -55,25 +55,22 @@ class connect_db:
     #     except Exception as e:
     #         print(f"Error inserting temperature readings: {e}")
 
-
     # --- READ: Get Pending Insulin Doses ---
-    def get_dose(self,dose_id):
+    def get_dose(self, dose_id):
         try:
-            dose = self.insulin_collection.find_one({
-                "dose_id": dose_id
-            })
+            dose = self.insulin_collection.find_one({"dose_id": dose_id})
             return dose
         except Exception as e:
-            print(f'cannot retrieve dose {dose_id}')
+            print(f"cannot retrieve dose {dose_id}")
 
     def get_doses(self):
         """Retrieve pending insulin doses within a time window."""
         try:
             # end_time = datetime.now() + timedelta(hours=time_window_hours)
             doses = self.insulin_collection.find({})
-            
+
             # doses = self.insulin_collection.find()
-            print('Doses are: ')
+            print("Doses are: ")
             all_doses = list(doses)
             print(all_doses)
             return all_doses
@@ -83,15 +80,19 @@ class connect_db:
 
     def update_dose(self, dose_id, scheduled_time, status, amount, notes):
         try:
-            self.insulin_collection.update_one({'dose_id':dose_id},{
-                "$set":{
-                "scheduled_time": scheduled_time,
-                "status": status,
-                "amount": amount,
-                "notes": notes}
-            })
+            self.insulin_collection.update_one(
+                {"dose_id": dose_id},
+                {
+                    "$set": {
+                        "scheduled_time": scheduled_time,
+                        "status": status,
+                        "amount": amount,
+                        "notes": notes,
+                    }
+                },
+            )
         except Exception as e:
-            print(f'Cannot update schedule of dose {dose_id}')
+            print(f"Cannot update schedule of dose {dose_id}")
 
     # --- READ: Get Recent Temperature Readings ---
     def get_recent_temperatures(limit=10):
@@ -107,8 +108,9 @@ class connect_db:
     def mark_dose_taken(self, dose_id):
         """Update a dose's status to taken."""
         try:
-            result = self.insulin_collection.update_one({'dose_id': dose_id},
-                {"$set": {"status": "taken", "notes": "Dose taken on time"}}
+            result = self.insulin_collection.update_one(
+                {"dose_id": dose_id},
+                {"$set": {"status": "taken", "notes": "Dose taken on time"}},
             )
             print(f"Updated {result.modified_count} dose(s)")
         except Exception as e:
@@ -118,14 +120,16 @@ class connect_db:
     def delete_old_temperatures(self, before_date):
         """Delete temperature readings older than a given date."""
         try:
-            result = self.temp_collection.delete_many({"timestamp": {"$lt": before_date}})
+            result = self.temp_collection.delete_many(
+                {"timestamp": {"$lt": before_date}}
+            )
             print(f"Deleted {result.deleted_count} old temperature readings")
         except Exception as e:
             print(f"Error deleting temperatures: {e}")
-            
-            
+
     def close_db(self):
         self.client.close()
+
 
 #     # --- Example Usage ---
 #     # Add an insulin dose
