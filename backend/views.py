@@ -40,7 +40,7 @@ def scheduling_api(request, dose_id = ""):
         schedule_dose_id = request.POST.get('dose_id')
         dose_id = schedule_dose_id
         print("Pleassse:")
-        print(dose_id)
+        print(schedule_dose_id)
         if not db_object.get_dose(dose_id):
             db_object.close_db()
             return HttpResponse("Dose does not exist", status = 404)
@@ -49,7 +49,7 @@ def scheduling_api(request, dose_id = ""):
         schedule_date = request.POST.get('date') # Format - YYYY:MM:DD
         schedule_status = request.POST.get('status')
         schedule_notes = request.POST.get('notes')
-        schedule_amount = request.POST.get("anount")
+        schedule_amount = request.POST.get("amount")
         date_time_str = f'{schedule_date} {schedule_time}'
         schedule_datetime = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
         db_object.update_dose(schedule_dose_id, schedule_datetime, schedule_status,schedule_amount, schedule_notes)
