@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 from bson import json_util
 from django.views.decorators.csrf import csrf_exempt
+from django.http import QueryDict
 
 
 
@@ -37,7 +38,8 @@ def scheduling_api(request, dose_id = ""):
         db_object.close_db()
         return HttpResponse("Dose Scheduled", status = 201)
     elif request.method == "PUT":
-        schedule_dose_id = request.POST.get('dose_id')
+        put_data = QueryDict(request.body).dict()
+        schedule_dose_id = put_data.get('dose_id')
         dose_id = schedule_dose_id
         print("Pleassse:")
         print(schedule_dose_id)
@@ -45,11 +47,11 @@ def scheduling_api(request, dose_id = ""):
             db_object.close_db()
             return HttpResponse("Dose does not exist", status = 404)
         
-        schedule_time = request.POST.get('time') # Format - HH:MM
-        schedule_date = request.POST.get('date') # Format - YYYY:MM:DD
-        schedule_status = request.POST.get('status')
-        schedule_notes = request.POST.get('notes')
-        schedule_amount = request.POST.get("amount")
+        schedule_time = put_data.get('time') # Format - HH:MM
+        schedule_date = put_data.get('date') # Format - YYYY:MM:DD
+        schedule_status = put_data.get('status')
+        schedule_notes = put_data.get('notes')
+        schedule_amount = put_data.get("amount")
         date_time_str = f'{schedule_date} {schedule_time}'
         schedule_datetime = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
         db_object.update_dose(schedule_dose_id, schedule_datetime, schedule_status,schedule_amount, schedule_notes)
