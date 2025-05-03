@@ -717,7 +717,7 @@
   
   <script>
     // Mock API for testing (replace with actual endpoint)
-    const API_BASE_URL = 'http://192.168.231.216:8080/schedule/';
+    const API_BASE_URL = 'http://192.168.182.216:8080/schedule/';
     // const mockDoses = [
     //   { id: 1, time: '07:30', type: 'Meal Bolus', amount: 4.2, description: 'Breakfast' },
     //   { id: 2, time: '12:30', type: 'Meal Bolus', amount: 4.5, description: 'Lunch' },
@@ -861,7 +861,7 @@
     // Fetch and display doses
     async function fetchDoses() {
       try {
-        const response = await fetch('http://192.168.182.216:8080/schedule/',{
+        const response = await fetch(`${API_BASE_URL}/schedule/`,{
             method: 'GET',
             headers:{
                 'Content-Type': 'application/json'
@@ -907,7 +907,7 @@
                 <button class="action-btn delete" dose-id="${dose.dose_id}">Delete</button>
               </div>
             </div>
-            <div>Type: ${dose["status"]}, Amount: ${dose["amount"]} U</div>
+            <div>Status: ${dose["status"]}, Amount: ${dose["amount"]} U</div>
           `;
           doseEntries.appendChild(doseEntry);
         };
@@ -934,14 +934,14 @@
             document.getElementById('add-dose-btn').textContent = 'Update Dose';
             document.getElementById('add-dose-btn').onclick = async () => {
               try {
-                const response = await fetch(`${API_BASE_URL}/${id}`, {
+                const response = await fetch(`${API_BASE_URL}/schedule/`, {
                   method: 'PUT',
                   headers: { 'Content-Type': 'application/json' },
                   body: new URLSearchParams({
-                    time: document.getElementById('scheduled_time').value,
-                    status: document.getElementById('status').value,
-                    amount: parseFloat(document.getElementById('anount').value),
-                    notes: document.getElementById('notes').value
+                    time: document.getElementById('add_time').value,
+                    status: document.getElementById('add_status').value,
+                    amount: parseFloat(document.getElementById('add_amount').value),
+                    notes: document.getElementById('add_notes').value
                   })
                 });
                 const result = await response.text();
@@ -960,7 +960,7 @@
           btn.addEventListener('click', async () => {
             const id = btn.getAttribute('dose_id');
             try {
-              const response = await fetch(`${API_BASE_URL}`, {
+              const response = await fetch(`${API_BASE_URL}/schedule/`, {
                 method: 'DELETE',
                 headers:{
                   'Content-Type': 'application/json'
