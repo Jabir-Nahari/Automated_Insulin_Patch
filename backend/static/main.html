@@ -916,7 +916,13 @@
         document.querySelectorAll('.action-btn.update').forEach(btn => {
           btn.addEventListener('click', () => {
             const id = btn.getAttribute('dose_id');
-            const dose = doses['dose_id' == id]
+            for(let i = 0; i < dose.length; i++){
+              let temp = doses[i];
+              if(temp['dose_id'] == id){
+                const dose = temp['dose_id'];
+              }
+            }
+            
             document.getElementsByClassName('schedule-form').scrollTop = 0;
             document.getElementById('add_time').value = dose["scheduled_time"];
             document.getElementById('add_status').value = dose["status"];
