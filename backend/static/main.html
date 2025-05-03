@@ -936,7 +936,7 @@
               try {
                 const response = await fetch(`${API_BASE_URL}/schedule/`, {
                   method: 'PUT',
-                  headers: { 'Content-Type': 'application/json' },
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: new URLSearchParams({
                     dose_id: id,
                     time: document.getElementById('add_time').value,
