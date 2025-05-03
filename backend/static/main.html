@@ -938,6 +938,7 @@
                   method: 'PUT',
                   headers: { 'Content-Type': 'application/json' },
                   body: new URLSearchParams({
+                    dose_id: id,
                     time: document.getElementById('add_time').value,
                     status: document.getElementById('add_status').value,
                     amount: parseFloat(document.getElementById('add_amount').value),
