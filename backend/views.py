@@ -39,6 +39,7 @@ def scheduling_api(request, dose_id = ""):
     elif request.method == "PUT":
         schedule_dose_id = request.POST.get('dose_id')
         dose_id = schedule_dose_id
+        print("Pleassse:")
         print(dose_id)
         if not db_object.get_dose(dose_id):
             db_object.close_db()
