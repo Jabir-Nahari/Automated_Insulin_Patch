@@ -916,10 +916,11 @@
         document.querySelectorAll('.action-btn.update').forEach(btn => {
           btn.addEventListener('click', () => {
             const id = btn.getAttribute('dose_id');
+            let dose;
             for(let i = 0; i < dose.length; i++){
               let temp = doses[i];
               if(temp['dose_id'] == id){
-                const dose = temp['dose_id'];
+                 dose = temp['dose_id'];
               }
             }
             
