@@ -927,7 +927,7 @@
             console.log(dose)
             
             document.getElementsByClassName('schedule-form').scrollTop = 0;
-            document.getElementById('add_time').value = dose["scheduled_time"].replace(':',"-").replace(' ','T');
+            document.getElementById('add_time').value = dose["scheduled_time"].replaceAll(':',"-").replace(' ','T');
             document.getElementById('add_status').value = dose["status"];
             document.getElementById('add_amount').value = dose["amount"];
             document.getElementById('add_notes').value = dose["notes"];
