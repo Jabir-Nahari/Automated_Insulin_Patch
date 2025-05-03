@@ -37,10 +37,11 @@ def scheduling_api(request, dose_id = ""):
         db_object.close_db()
         return HttpResponse("Dose Scheduled", status = 201)
     elif request.method == "PUT":
+        schedule_dose_id = request.POST.get('dose_id')
         if not db_object.get_dose(dose_id):
             db_object.close_db()
             return HttpResponse("Dose does not exist", status = 404)
-        schedule_dose_id = request.POST.get('dose_id')
+        
         schedule_time = request.POST.get('time') # Format - HH:MM
         schedule_date = request.POST.get('date') # Format - YYYY:MM:DD
         schedule_status = request.POST.get('status')
