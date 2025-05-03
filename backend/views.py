@@ -38,6 +38,7 @@ def scheduling_api(request, dose_id = ""):
         return HttpResponse("Dose Scheduled", status = 201)
     elif request.method == "PUT":
         schedule_dose_id = request.POST.get('dose_id')
+        dose_id = schedule_dose_id
         if not db_object.get_dose(dose_id):
             db_object.close_db()
             return HttpResponse("Dose does not exist", status = 404)
