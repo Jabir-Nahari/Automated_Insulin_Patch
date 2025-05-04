@@ -115,7 +115,7 @@ class connect_db:
             
     def delete_dose(self, dose_id):
         try:
-            result = self.insulin_collection.deleteOne({
+            result = self.insulin_collection.delete_one({
                 "dose_id": dose_id
             })
             print(f"Deleted dose {result}")
