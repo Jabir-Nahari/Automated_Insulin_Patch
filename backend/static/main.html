@@ -927,7 +927,11 @@
             console.log("id: "+id)
             
             document.getElementsByClassName('schedule-form').scrollTop = 0;
-            document.getElementById('add_time').value = dose["scheduled_time"].replace(':',"-").replace(':',"-").replace(' ','T');
+            if(typeof(document.getElementById('add_time').value) == 'string'){
+              document.getElementById('add_time').value = dose["scheduled_time"].replace(':',"-").replace(':',"-").replace(' ','T');
+            }else{
+              document.getElementById('add_time').value = dose["scheduled_time"]
+            }
             document.getElementById('add_status').value = dose["status"];
             document.getElementById('add_amount').value = dose["amount"];
             document.getElementById('add_notes').value = dose["notes"];
