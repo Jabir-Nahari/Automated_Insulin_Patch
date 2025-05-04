@@ -118,6 +118,7 @@ class connect_db:
             result = self.insulin_collection.deleteOne({
                 "dose_id": dose_id
             })
+            print(f"Deleted dose {result}")
         except Exception as e:
             print(f'Error removing dose {e}')
 
