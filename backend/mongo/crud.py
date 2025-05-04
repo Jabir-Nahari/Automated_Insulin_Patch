@@ -103,7 +103,6 @@ class connect_db:
 
     # --- UPDATE: Mark Dose as Taken ---
     def mark_dose_taken(self, dose_id):
-        """Update a dose's status to taken."""
         try:
             result = self.insulin_collection.update_one(
                 {"dose_id": dose_id},
@@ -112,10 +111,18 @@ class connect_db:
             print(f"Updated {result.modified_count} dose(s)")
         except Exception as e:
             print(f"Error updating dose: {e}")
+            
+            
+    def delete_dose(self, dose_id):
+        try:
+            result = self.insulin_collection.deleteOne({
+                "dose_id": dose_id
+            })
+        except Exception as e:
+            print(f'Error removing dose {e}')
 
     # --- DELETE: Remove Old Temperature Readings ---
     def delete_old_temperatures(self, before_date):
-        """Delete temperature readings older than a given date."""
         try:
             result = self.temp_collection.delete_many(
                 {"timestamp": {"$lt": before_date}}

@@ -63,7 +63,7 @@ def scheduling_api(request, dose_id = ""):
         if not db_object.get_dose(dose_id):
             db_object.close_db()
             return HttpResponse("Dose does not exist", status = 404)
-        db_object.mark_dose_taken(dose_id)
+        db_object.delete_dose(dose_id)
         db_object.close_db()
         return HttpResponse("Dose Deleted", status = 201)
             
