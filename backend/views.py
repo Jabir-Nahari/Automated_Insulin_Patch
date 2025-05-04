@@ -11,7 +11,7 @@ from django.http import QueryDict
 
 def main_page(request):
     # return render(request, "./static/main.html")
-    return FileResponse(open('backend/static/main.html', 'rb'))
+    return FileResponse(open('backend/static/main2.html', 'rb'))
 
 @csrf_exempt
 def scheduling_api(request, dose_id = ""):
