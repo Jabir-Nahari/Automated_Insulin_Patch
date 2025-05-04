@@ -33,16 +33,13 @@ def scheduling_api(request, dose_id = ""):
         # schedule_datetime = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
         scheduled_time = request.POST.get('scheduled_time')
         scheduled_status = request.POST.get('scheduled_status')
-        print(scheduled_time, scheduled_status,schedule_amount, schedule_notes)
         db_object.add_insulin_dose(scheduled_time, scheduled_status,schedule_amount, schedule_notes)
         db_object.close_db()
         return HttpResponse("Dose Scheduled", status = 201)
     elif request.method == "PUT":
         put_data = QueryDict(request.body).dict()
         schedule_dose_id = put_data.get('dose_id')
-        dose_id = schedule_dose_id
-        print("Pleassse:")
-        print(schedule_dose_id)
+        
         if not db_object.get_dose(dose_id):
             db_object.close_db()
             return HttpResponse("Dose does not exist", status = 404)
@@ -60,6 +57,8 @@ def scheduling_api(request, dose_id = ""):
     elif request.method == "DELETE":
         json_data = json.loads(request.body)
         dose_id = json_data.get('dose_id')
+        print("Deletwe Test")
+        print(dose_id)
         if not db_object.get_dose(dose_id):
             db_object.close_db()
             return HttpResponse("Dose does not exist", status = 404)

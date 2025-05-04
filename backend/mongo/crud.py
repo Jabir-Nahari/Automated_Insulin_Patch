@@ -68,11 +68,8 @@ class connect_db:
         try:
             # end_time = datetime.now() + timedelta(hours=time_window_hours)
             doses = self.insulin_collection.find({})
-
             # doses = self.insulin_collection.find()
-            print("Doses are: ")
             all_doses = list(doses)
-            print(all_doses)
             return all_doses
         except Exception as e:
             print(f"Error retrieving doses: {e}")
