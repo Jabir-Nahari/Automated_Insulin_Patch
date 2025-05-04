@@ -827,8 +827,8 @@
     return formatted;
   }
 
-    document.getElementById('add-dose-btn').addEventListener('click', async () => {
-      const time = formatTimestamp(document.getElementById('add_time').value);
+  async function dose_btn_func(){
+const time = formatTimestamp(document.getElementById('add_time').value);
       const status = document.getElementById('add_status').value;
       const amount = parseFloat(document.getElementById('add_amount').value);
       const notes = document.getElementById('add_notes').value;
@@ -856,7 +856,9 @@
       } catch (error) {
         showPopup('Error adding dose: ' + error.message);
       }
-    });
+  }
+
+    document.getElementById('add-dose-btn').addEventListener('click', dose_btn_func)
 
     // Fetch and display doses
     async function fetchDoses() {
@@ -938,6 +940,7 @@
             document.getElementById('add_notes').value = dose["notes"];
             document.getElementById('add-dose-btn').textContent = 'Update Dose';
             document.getElementById('add-dose-btn').onclick = null
+            document.getElementById('add-dose-btn').removeEventListener('click', dose_btn_func)
             document.getElementById('add-dose-btn').onclick = async () => {
               try {
                 const response = await fetch(`${API_BASE_URL}/schedule/`, {
@@ -954,6 +957,7 @@
                 const result = await response.text();
                 showPopup(result);
                 fetchDoses();
+                document.getElementById('add-dose-btn').onclick = null
                 document.getElementById('add-dose-btn').textContent = 'Add Dose';
                 document.getElementById('add-dose-btn').onclick = addDoseHandler;
               } catch (error) {
