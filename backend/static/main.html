@@ -773,31 +773,31 @@
       addDoseModal.classList.remove('active');
     });
 
-    saveDoseBtn.addEventListener('click', async () => {
-      const time = document.getElementById('modal-dose-time').value;
-      const type = document.getElementById('modal-dose-type').value;
-      const amount = parseFloat(document.getElementById('modal-dose-amount').value);
-      const description = document.getElementById('modal-dose-description').value;
+    // saveDoseBtn.addEventListener('click', async () => {
+    //   const time = document.getElementById('modal-dose-time').value;
+    //   const type = document.getElementById('modal-dose-type').value;
+    //   const amount = parseFloat(document.getElementById('modal-dose-amount').value);
+    //   const description = document.getElementById('modal-dose-description').value;
       
-      if (!time || !type || isNaN(amount) || amount <= 0) {
-        showPopup('Please fill all fields correctly.');
-        return;
-      }
+    //   if (!time || !type || isNaN(amount) || amount <= 0) {
+    //     showPopup('Please fill all fields correctly.');
+    //     return;
+    //   }
 
-      try {
-        const response = await fetch(`${API_BASE_URL}/schedule/`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ time, type, amount, description })
-        });
-        const result = await response.json();
-        showPopup(result.message || 'Dose added successfully.');
-        addDoseModal.classList.remove('active');
-        fetchDoses();
-      } catch (error) {
-        showPopup('Error adding dose: ' + error.message);
-      }
-    });
+    //   try {
+    //     const response = await fetch(`${API_BASE_URL}/schedule/`, {
+    //       method: 'POST',
+    //       headers: { 'Content-Type': 'application/json' },
+    //       body: JSON.stringify({ time, type, amount, description })
+    //     });
+    //     const result = await response.json();
+    //     showPopup(result.message || 'Dose added successfully.');
+    //     addDoseModal.classList.remove('active');
+    //     fetchDoses();
+    //   } catch (error) {
+    //     showPopup('Error adding dose: ' + error.message);
+    //   }
+    // });
 
     // Schedule form functionality
     document.getElementById('manage-schedule-btn').addEventListener('click', () => {
@@ -932,6 +932,7 @@
             document.getElementById('add_amount').value = dose["amount"];
             document.getElementById('add_notes').value = dose["notes"];
             document.getElementById('add-dose-btn').textContent = 'Update Dose';
+            document.getElementById('add-dose-btn').onclick = null
             document.getElementById('add-dose-btn').onclick = async () => {
               try {
                 const response = await fetch(`${API_BASE_URL}/schedule/`, {
