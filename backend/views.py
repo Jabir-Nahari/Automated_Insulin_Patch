@@ -39,6 +39,7 @@ def scheduling_api(request, dose_id = ""):
     elif request.method == "PUT":
         put_data = QueryDict(request.body).dict()
         schedule_dose_id = put_data.get('dose_id')
+        dose_id = schedule_dose_id
         print("PUT")
         print(schedule_dose_id)
         if not db_object.get_dose(dose_id):
