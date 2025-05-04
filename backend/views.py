@@ -51,7 +51,7 @@ def scheduling_api(request, dose_id = ""):
         schedule_status = put_data.get('status')
         schedule_notes = put_data.get('notes')
         schedule_amount = put_data.get("amount")
-        date_time_str = schedule_time.replace("T", " ")
+        date_time_str = schedule_time.replace("T", " ").replace("-",":")
         schedule_datetime = datetime.strptime(date_time_str, '%Y:%m:%d %H:%M')
         db_object.update_dose(schedule_dose_id, schedule_datetime, schedule_status,schedule_amount, schedule_notes)
         db_object.close_db()
