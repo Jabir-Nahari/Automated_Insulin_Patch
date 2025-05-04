@@ -55,6 +55,7 @@ def scheduling_api(request, dose_id = ""):
         return HttpResponse("Dose Modified", status = 201)
     
     elif request.method == "DELETE":
+        print(request.body)
         json_data = json.loads(request.body)
         dose_id = json_data.get('dose_id')
         print("Deletwe Test")

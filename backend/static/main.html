@@ -966,6 +966,7 @@
         document.querySelectorAll('.action-btn.delete').forEach(btn => {
           btn.addEventListener('click', async () => {
             const id = btn.getAttribute('dose_id');
+            console.log("whatt: "+id)
             try {
               const response = await fetch(`${API_BASE_URL}/schedule/`, {
                 method: 'DELETE',
