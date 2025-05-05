@@ -40,7 +40,7 @@ class connect_db:
         """Batch insert temperature readings to optimize memory usage."""
         try:
             result = self.temp_collection.insert_one(
-                {"temprature": temprature, "timestamp": timestamp, 'voltage': voltage}
+                {"timestamp": timestamp, "temprature": temprature, 'voltage': voltage}
             )
             print(f"Inserted {len(result.inserted_ids)} temperature readings")
         except Exception as e:

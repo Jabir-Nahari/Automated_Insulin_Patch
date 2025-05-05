@@ -110,7 +110,7 @@ class TemperatureSensor:
 
         while True:
             # Read temperature by awaiting the async method that uses the executor
-            voltage = await self.read_temp_sensor()
+            self.voltage = await self.read_temp_sensor()
 
             # Now 'voltage' is the float value returned by read_temp_sensor
             # REMOVE [0] - voltage is already a number
@@ -152,18 +152,31 @@ class TemperatureSensor:
             # print(f"[{threading.current_thread().name}] Executing file write...")
             try:
                 # Standard blocking file I/O
-                single_insert_temperatures(temp_to_store,time.strftime('%Y:%m:%d %H:%M:%S'))
-                # f.write(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Temp: {temp_to_store:.2f} C\n")
-                # print(f"[{threading.current_thread().name}] Finished file write.")
+                db_object.single_insert_temperatures(temp_to_store,time.strftime('%Y:%m:%d %H:%M:%S'),self.current_temperature,self.voltage)
+                
             except Exception as e:
                 # Handle file writing errors
                 print(f"[{threading.current_thread().name}] Error writing to db: {e}")
             finally:
                 db_object.close_db()
+                
+        def delete_old_temperatures_db(before_date):
+            db_object = crud.connect_db()
+            try:
+                all_temps = db_object.temp_collection.find()
+                for temp in temps:
+                    if temp.timestamp = 
+            except Exception as e:
+                print('error')
+                
+            finally:
+                db_object.close_db()
 
         while True:
             # Offload the synchronous blocking file writing function to executor
+            await self.temperature_check()
             await self._run_blocking(write_current_temperature_to_file)
+            
             print(f"[{time.strftime('%H:%M:%S')}] Stored temperature: {self.current_temperature:.2f} C") # Print the value that was stored
 
             # Yield control back to the event loop

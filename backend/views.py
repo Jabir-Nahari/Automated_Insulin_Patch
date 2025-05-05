@@ -73,3 +73,16 @@ def scheduling_api(request, dose_id = ""):
         db_object.close_db()
         return HttpResponse("Invalid Request", status = 404)
     
+
+
+
+@csrf_exempt
+def temprature_api(request):
+    db_object = crud.connect_db()
+    if request.method == "GET":
+        json_data = ''
+        return JsonResponse(json_data, safe=False)
+    
+    else:
+        db_object.close_db()
+        return HttpResponse("Invalid Request", status = 404)
