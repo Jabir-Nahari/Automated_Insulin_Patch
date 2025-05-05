@@ -6,7 +6,7 @@ GPIO.setmode(GPIO.BCM)
 
 breaker_pin = 25
 GPIO.setup(breaker_pin, GPIO.OUT)
-fan_pin = 15
+fan_pin = 8
 command = int(input("Enter 1 to run and 2 to stop: "))
 def control_breaker():
     if command == 1:
