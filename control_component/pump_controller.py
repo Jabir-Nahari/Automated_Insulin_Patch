@@ -7,7 +7,7 @@ import asyncio
 from ..backend.mongo import crud
 
 insulin_dose = 3
-pump_flow_rate = 0.0028 # micro liters Per second
+pump_flow_rate = 27.78 # milli liters Per second
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -19,7 +19,7 @@ async def _run_blocking(self, func, *args, **kwargs):
         return await loop.run_in_executor(None, functools.partial(func, *args, **kwargs))
 
 
-def calculate_dose_time(dose): # Dose is amount of micro liters
+def calculate_dose_time(dose): # Dose is amount of milli liters
     dose_time = dose*pump_flow_rate;
     return dose_time
 
@@ -44,7 +44,7 @@ async def pump():
 async def run_pump():
     while True:
         db_object = crud.connect_db()
-        current_timestamp = datetime.now().strftime("%Y:%m:%d %H:%M")
+        current_timestamp = datetime.now().strptime("%Y:%m:%d %H:%M")
         time_cursor = db_object.insulin_collection.find({'scheduled_time': current_timestamp})
         if time_cursor.count != 0:
             db_object.close_db()

@@ -9,6 +9,7 @@ from adafruit_ads1x15.analog_in import AnalogIn
 import importlib.util
 import os
 from ..backend.mongo import crud
+from datetime import datetime, timedelta
 
 module_path = '/home/Automated_Insulin_Pump/aip_backend/aip_backend/models/crud.py'
 module_name = 'crud'
@@ -160,12 +161,17 @@ class TemperatureSensor:
             finally:
                 db_object.close_db()
                 
-        def delete_old_temperatures_db(before_date):
+        def delete_old_temperatures_db():
             db_object = crud.connect_db()
             try:
+                now = datetime.now()
+                minus_1day = now - timedelta(1)
                 all_temps = db_object.temp_collection.find()
                 for temp in temps:
-                    if temp.timestamp = 
+                    formatted_time =  datetime.strptime(temp.timestamp, '"%Y:%m:%d %H:%M"')
+                    
+                    if formatted_time < minus_1day:
+                        db_object.temp_collection.deleteOne({'_id': temp['_id']})
             except Exception as e:
                 print('error')
                 
@@ -175,8 +181,8 @@ class TemperatureSensor:
         while True:
             # Offload the synchronous blocking file writing function to executor
             await self.temperature_check()
-            await self._run_blocking(write_current_temperature_to_file)
-            
+            await self._run_blocking(write_current_temperature_to_db())
+            await self._run_blocking(delete_old_temperatures_db())
             print(f"[{time.strftime('%H:%M:%S')}] Stored temperature: {self.current_temperature:.2f} C") # Print the value that was stored
 
             # Yield control back to the event loop

@@ -80,6 +80,7 @@ def scheduling_api(request, dose_id = ""):
 def temprature_api(request):
     db_object = crud.connect_db()
     if request.method == "GET":
+        temps = db_object.get_recent_temperatures
         json_data = ''
         return JsonResponse(json_data, safe=False)
     
