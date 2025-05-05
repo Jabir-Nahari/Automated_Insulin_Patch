@@ -8,6 +8,7 @@ import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 import importlib.util
 import os
+from ..backend.mongo import crud
 
 module_path = '/home/Automated_Insulin_Pump/aip_backend/aip_backend/models/crud.py'
 module_name = 'crud'
@@ -131,7 +132,7 @@ class TemperatureSensor:
             # Yield control back to the event loop so other tasks (like store_temperature) and timers can run
             await asyncio.sleep(check_interval)
 
-
+        
     async def store_temperature(self, store_interval=1):
         """Periodically stores the current temperature."""
         if not hardware_initialized:
@@ -143,18 +144,22 @@ class TemperatureSensor:
         # --- Blocking Synchronous File Writing Function ---
         # This must be 'def', NOT 'async def', as it contains blocking file I/O
         # and is run in a separate thread by the executor.
-        def write_current_temperature_to_file():
+        def write_current_temperature_to_db():
+            db_object = crud.connect_db()
+            
             # Use the temperature value captured in the store_temperature task
             temp_to_store = self.current_temperature # Access the last calculated temperature
             # print(f"[{threading.current_thread().name}] Executing file write...")
             try:
                 # Standard blocking file I/O
-                single_insert_temperatures(temp_to_store,time.strftime('%Y-%m-%d %H:%M:%S'),)
+                single_insert_temperatures(temp_to_store,time.strftime('%Y:%m:%d %H:%M:%S'))
                 # f.write(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Temp: {temp_to_store:.2f} C\n")
                 # print(f"[{threading.current_thread().name}] Finished file write.")
             except Exception as e:
                 # Handle file writing errors
                 print(f"[{threading.current_thread().name}] Error writing to db: {e}")
+            finally:
+                db_object.close_db()
 
         while True:
             # Offload the synchronous blocking file writing function to executor

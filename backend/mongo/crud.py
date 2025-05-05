@@ -36,11 +36,11 @@ class connect_db:
             print(f"Error inserting insulin dose: {e}")
 
     # --- CREATE: Batch Insert Temperature Readings ---
-    def single_insert_temperatures(self, temprature, timestamp):
+    def single_insert_temperatures(self, temprature, timestamp, voltage):
         """Batch insert temperature readings to optimize memory usage."""
         try:
             result = self.temp_collection.insert_one(
-                {"temprature": temprature, "timestamp": timestamp}
+                {"temprature": temprature, "timestamp": timestamp, 'voltage': voltage}
             )
             print(f"Inserted {len(result.inserted_ids)} temperature readings")
         except Exception as e:
