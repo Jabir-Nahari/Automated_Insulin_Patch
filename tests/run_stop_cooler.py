@@ -6,7 +6,7 @@ import gpiod
 
 # breaker_pin = 25
 breaker_pin = 18
-chip = gpiod.Chip('gpiochip4')
+chip = gpiod.Chip('gpiochip0')
 line = chip.get_line(breaker_pin)
 line.request(consumer="pump_control", type=gpiod.LINE_REQ_DIR_OUT)
 # GPIO.setup(breaker_pin, GPIO.OUT)
