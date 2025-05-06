@@ -602,8 +602,8 @@
       <div class="bottom-nav">
         <div class="nav-item active" data-screen="home-screen">Home</div>
         <div class="nav-item" data-screen="schedule-screen">Sched</div>
-        <div class="nav-item" data-screen="stats-screen">Stats</div>
-        <div class="nav-item" data-screen="settings-screen">Set</div>
+        <!-- <div class="nav-item" data-screen="stats-screen">Stats</div>
+        <div class="nav-item" data-screen="settings-screen">Set</div> -->
       </div>
     </div>
   </div>
@@ -875,7 +875,7 @@
 // Step 1: Fetch insulin data (mocked or from an API)
 async function fetchInsulinData() {
   try {
-    const response = await fetch(`http://${API_BASE_URL}/api/insulin/`);
+    const response = await fetch(`http://${API_BASE_URL}/insulin_chart`);
     if (!response.ok) throw new Error("Failed to fetch insulin data");
 
     const data = await response.json();

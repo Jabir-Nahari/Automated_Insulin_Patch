@@ -8,7 +8,7 @@ run_duration = 3 # need actual time
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-used_pin = 25
+used_pin = 24
 
 async def _run_blocking(self, func, *args, **kwargs):
         loop = asyncio.get_running_loop()

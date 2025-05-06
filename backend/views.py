@@ -89,7 +89,7 @@ def temprature_api(request):
         return HttpResponse("Invalid Request", status = 404)
     
 @csrf_exempt
-def insulin_char(request):
+def insulin_chart(request):
     db_object = crud.connect_db()
     raw_data = db_object.get_recent_insulin_data(hours=3)
 
