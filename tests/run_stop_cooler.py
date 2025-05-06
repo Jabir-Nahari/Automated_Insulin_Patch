@@ -1,8 +1,8 @@
 # import RPi.GPIO as GPIO
 import time
 import gpiod
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
+# GPIO.setwarnings(False)
+# GPIO.setmode(GPIO.BCM)
 
 # breaker_pin = 25
 breaker_pin = 18
