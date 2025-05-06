@@ -1001,7 +1001,10 @@ const time = formatTimestamp(document.getElementById('add_time').value);
 
     // Initial fetch
 
+    
+
     document.querySelector('[data-screen="schedule-screen"]').addEventListener('click',async (e)=>{
+      await renderChart()
       await fetchDoses();
     })
 

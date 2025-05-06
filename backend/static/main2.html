@@ -871,6 +871,94 @@
 
     const addDoseHandler = document.getElementById('add-dose-btn').onclick;
 
+
+// Step 1: Fetch insulin data (mocked or from an API)
+async function fetchInsulinData() {
+  try {
+    const response = await fetch(`http://${API_BASE_URL}/api/insulin/`);
+    if (!response.ok) throw new Error("Failed to fetch insulin data");
+
+    const data = await response.json();
+
+    return data.map(entry => ({
+      scheduled_time: new Date(entry.timestamp),
+      "status": date['status'],
+      "amount": entry.amount,
+      "notes": ['notes'],
+    
+    }));
+  } catch (error) {
+    console.error("Error fetching insulin data:", error);
+    return [];
+  }
+}
+
+
+
+// Step 2: Map data to chart coordinates
+function prepareChartData(dataPoints, svgWidth = 270, svgHeight = 70) {
+  if (!dataPoints.length) return [];
+
+  // Sort by timestamp
+  dataPoints.sort((a, b) => a.timestamp - b.timestamp);
+
+  const earliest = dataPoints[0].timestamp;
+  const latest = dataPoints[dataPoints.length - 1].timestamp;
+
+  const timeRange = latest - earliest || 1; // avoid division by zero
+  const doses = dataPoints.map(d => d.dose);
+  const maxDose = Math.max(...doses);
+  const minDose = Math.min(...doses);
+  const doseRange = maxDose - minDose || 1; // avoid division by zero
+
+  return dataPoints.map(point => {
+    const x = ((point.timestamp - earliest) / timeRange) * svgWidth;
+    const y = svgHeight - ((point.dose - minDose) / doseRange) * svgHeight;
+
+    return { x, y };
+  });
+}
+
+// Step 3: Generate path string from points
+function generatePathData(points) {
+  if (!points.length) return '';
+
+  let path = `M ${points[0].x} ${points[0].y}`;
+
+  for (let i = 1; i < points.length; i++) {
+    const cpX = (points[i - 1].x + points[i].x) / 2;
+    const cpY = points[i - 1].y;
+    path += ` S ${cpX} ${cpY} ${points[i].x} ${points[i].y}`;
+  }
+
+  return path;
+}
+
+// Step 4: Main function to update chart
+async function updateChart() {
+  try {
+    const rawData = await fetchInsulinData();
+    const chartPoints = prepareChartData(rawData);
+    const pathData = generatePathData(chartPoints);
+
+    const chartLine = document.querySelector('.chart-line');
+    if (chartLine) {
+      chartLine.setAttribute('d', pathData);
+    } else {
+      console.warn("No .chart-line element found.");
+    }
+  } catch (error) {
+    console.error("Error fetching or rendering chart data:", error);
+  }
+}
+
+// 🚀 Run it!
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('DOM fully loaded and parsed');
+  updateChart();
+});
+    
+
     document.querySelector('[data-screen="schedule-screen"]').addEventListener('click', async (e)=>{
       await fetchDoses();
     });

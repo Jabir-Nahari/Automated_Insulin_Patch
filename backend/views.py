@@ -87,3 +87,27 @@ def temprature_api(request):
     else:
         db_object.close_db()
         return HttpResponse("Invalid Request", status = 404)
+    
+@csrf_exempt
+def insulin_char(request):
+    db_object = crud.connect_db()
+    raw_data = db_object.get_recent_insulin_data(hours=3)
+
+    results = []
+    for entry in raw_data:
+        try:
+            # Parse timestamp string
+            naive_dt = datetime.strptime(entry['timestamp'], "%Y:%m:%d %H:%M")
+            aware_dt = naive_dt.replace(tzinfo=tzutc())  # assuming UTC
+            results.append({
+                "scheduled_time": aware_dt.isoformat(),
+                "status": entry['status'],
+                "amount": entry['amount'],
+                "notes": entry['notes'],
+            })
+        except Exception as e:
+            print(f"Error parsing entry: {entry} | Error: {e}")
+            continue
+        finally:
+            db_object.close_db()
+    return JsonResponse(results, safe=False)

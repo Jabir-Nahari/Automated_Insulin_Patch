@@ -3,7 +3,8 @@ from datetime import datetime, timedelta
 import os
 import time
 import uuid
-
+from dateutil import tz
+import pytz
 # Load environment variables
 mongo_uri = "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.0"
 # try:
@@ -121,6 +122,22 @@ class connect_db:
             print(f"Deleted dose {result}")
         except Exception as e:
             print(f'Error removing dose {e}')
+            
+    
+    def get_recent_insulin_data(self,hours=5):
+        
+
+        now = datetime.now(pytz.utc)
+        cutoff = now - timedelta(hours=hours)
+
+        # Convert cutoff to your string format (naive time assumed in UTC)
+        cutoff_str = cutoff.strftime("%Y:%m:%d %H:%M")
+
+        cursor = self.find({
+            "timestamp": {"$gte": cutoff_str}
+        }).sort("timestamp", 1)
+
+        return list(cursor)
 
     # --- DELETE: Remove Old Temperature Readings ---
     def delete_old_temperatures(self, before_date):
