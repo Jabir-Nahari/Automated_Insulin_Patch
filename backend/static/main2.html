@@ -973,14 +973,21 @@ async function timeSetter() {
   updateClock();
 }
 
-async function getBatter(){
-  await fetch(`${API_BASE_URL}/get_battery/`, {
+async function getBattery(){
+  const response = await fetch(`${API_BASE_URL}/get_battery/`, {
                 method: 'GET',
                 headers:{
                   'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({'dose_id':id})
               });
+
+  const result = await response.json();
+  const battery = JSON.parse(result);
+  for (let i = 0; i < battery.length; i++) {
+    
+    document.querySelector('.battery').textContent = battery[i]['battery']
+  }
+
 }
 
 
@@ -988,7 +995,7 @@ async function getBatter(){
 document.addEventListener('DOMContentLoaded', function () {
   console.log('DOM fully loaded and parsed');
   
-
+  getBattery()
   updateChart();
   timeSetter()
 });
