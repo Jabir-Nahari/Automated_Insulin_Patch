@@ -452,7 +452,7 @@
   <div class="device-screen">
     <div class="screen-content">
       <div class="status-bar">
-        <div class="time">10:42 AM</div>
+        <div class="time"></div>
         <div class="battery">
           75%
           <div class="battery-icon">
@@ -952,12 +952,40 @@ async function updateChart() {
   }
 }
 
+
+async function timeSetter() {
+  const timeElement = document.querySelector('.time');
+  
+  const updateClock = () => {
+    const date = new Date();
+    timeElement.textContent = date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+    
+    // Schedule next update at the beginning of the next second
+    const delay = 1000 - date.getMilliseconds();
+    setTimeout(updateClock, delay);
+  };
+
+  // Initial call
+  updateClock();
+}
+
+
 // 🚀 Run it!
 document.addEventListener('DOMContentLoaded', function () {
   console.log('DOM fully loaded and parsed');
+  
+
   updateChart();
+  timeSetter()
 });
     
+ 
+    
+
 
     document.querySelector('[data-screen="schedule-screen"]').addEventListener('click', async (e)=>{
       await fetchDoses();
