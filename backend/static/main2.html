@@ -973,6 +973,16 @@ async function timeSetter() {
   updateClock();
 }
 
+async function getBatter(){
+  await fetch(`${API_BASE_URL}/get_battery/`, {
+                method: 'GET',
+                headers:{
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'dose_id':id})
+              });
+}
+
 
 // 🚀 Run it!
 document.addEventListener('DOMContentLoaded', function () {

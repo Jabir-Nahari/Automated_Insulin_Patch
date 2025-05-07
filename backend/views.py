@@ -111,3 +111,17 @@ def insulin_chart(request):
         finally:
             db_object.close_db()
     return JsonResponse(results, safe=False)
+
+@csrf_exempt
+def get_battery(request):
+    if request.method == "GET":
+        import psutil
+
+        battery = psutil.sensors_battery()
+        percent = battery.percent
+        plugged = battery.power_plugged
+        json_data = f'battery: {percent}'
+        
+        return JsonResponse(json_data, safe=False)
+    else:
+        return HttpResponse("Invalid Request", status=404)

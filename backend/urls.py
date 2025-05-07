@@ -3,6 +3,7 @@ from . import views  # Import your app's views
 
 urlpatterns = [
     # Define your app's URL patterns here
+    path('get_battery/', views.scheduling_api, name='get_battery'),
     path('insulin_chart/', views.scheduling_api, name='insulin_chart'),
     path('schedule/', views.scheduling_api, name='scheduling'),
     path('temprature/', views.temprature_api, name='temprature'),
